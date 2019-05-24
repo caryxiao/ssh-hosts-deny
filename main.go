@@ -1,42 +1,27 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"github.com/fsnotify/fsnotify"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
+type CmdConfig struct {
+	File            string // secure file path
+	SshLoginFailCnt int    // default ssh login failed count
+}
+
 func main() {
-	watcher, err := fsnotify.NewWatcher()
 
-	if err != nil {
-		fmt.Println("error: ", err)
-	}
+	var Config CmdConfig
 
-	defer watcher.Close()
+	flag.StringVar(&Config.File, "f", "", "Please specify a file you need to monitor")
+	flag.IntVar(&Config.SshLoginFailCnt, "cnt", 5, "ssh login failed count")
+	flag.Parse()
 
-	err = watcher.Add("/tmp/ghost-shadowsocks.log")
-
-	if err != nil {
-		fmt.Println("error: ", err)
-	}
-
-	go func() {
-		for {
-			select {
-			case ev := <-watcher.Events:
-				if ev.Op&fsnotify.Write == fsnotify.Write {
-					fmt.Println("写入文件")
-					fmt.Printf("data: %v \n", ev.Name)
-				}
-			case err := <-watcher.Errors:
-				fmt.Println("error: ", err)
-			}
-		}
-	}()
-
+	fmt.Println(Config)
 	waitSignal()
 }
 
