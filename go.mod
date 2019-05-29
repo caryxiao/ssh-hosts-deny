@@ -1,4 +1,4 @@
-module sshHostsDeny
+module github.com/caryxiao/ssh-hosts-deny
 
 go 1.12
 
