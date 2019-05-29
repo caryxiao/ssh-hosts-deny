@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/caryxiao/go-zlog"
+	shd "github.com/caryxiao/ssh-hosts-deny"
 	"os"
 	"os/signal"
-	shd "sshHostsDeny"
 	"syscall"
 )
 
