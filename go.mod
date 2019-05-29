@@ -1,8 +1,9 @@
-module watchlog
+module sshHostsDeny
 
 go 1.12
 
 require (
+	github.com/caryxiao/go-zlog v0.0.0-20190524094943-f82bb492396f
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/hpcloud/tail v1.0.0
 	golang.org/x/sys v0.0.0-20190523142557-0e01d883c5c5 // indirect
