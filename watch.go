@@ -40,7 +40,7 @@ func Watch(config CmdConfig) (err error) {
 		zlog.Logger.Error(err.Error())
 	}
 
-	pattern := `^pam_unix\(sshd:auth\)\:.*rhost=([^\s]*).*$`
+	pattern := `^.*pam_unix\(sshd:auth\)\:.*rhost=([^\s]*).*$`
 	reg := regexp.MustCompile(pattern)
 	var ip string
 	for line := range t.Lines {
@@ -52,19 +52,20 @@ func Watch(config CmdConfig) (err error) {
 				rdhs := hs.GetRecordHost(ip)
 				if rdhs.Cnt < config.SshLoginFailCnt {
 					hs.AddRecordHost(host{HType: "sshd", Ip: ip})
+					zlog.Logger.Debugf("add, type: %s, ip: %s, cnt: %d", "sshd", ip, rdhs.Cnt)
 				} else {
+					zlog.Logger.Debugf("write, type: %s, ip: %s, cnt: %d", rdhs.HType, rdhs.Ip, rdhs.Cnt)
 					err = WriteFile(denyFile, rdhs.HType+":"+rdhs.Ip)
 					if err != nil {
-						zlog.Logger.Error(err)
+						zlog.Logger.Errorf("write error: %s", err)
 					}
 					hs.add(rdhs.host)
 					hs.DelRecordHost(rdhs.host)
-					zlog.Logger.Debugf("%+v", hs)
+					zlog.Logger.Debugf("write %+v", hs)
 				}
 			}
+			zlog.Logger.Debugf("matched %+v", hs)
 		}
-
-		zlog.Logger.Debugf("%+v", hs)
 	}
 	return
 }
