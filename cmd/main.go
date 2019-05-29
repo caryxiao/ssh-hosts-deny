@@ -17,11 +17,11 @@ func main() {
 	var logLevel int
 
 	flag.StringVar(&Config.SecureFile, "sf", "", "Please specify a file you need to monitor")
-	flag.StringVar(&Config.DenyFile, "df", "/tmp/hosts.deny", "hosts.deny file path")
+	flag.StringVar(&Config.DenyFile, "df", "/etc/hosts.deny", "hosts.deny file path")
 	flag.IntVar(&Config.SshLoginFailCnt, "cnt", 5, "ssh login failed count")
 	flag.BoolVar(&Config.PrintVer, "v", false, "print version")
-	flag.StringVar(&logPath, "log-path", "", "日志文件位置, 默认控制台输出")
-	flag.IntVar(&logLevel, "log-level", 5, "日志记录的级别, 默认为debug. trace:6, debug:5, info:4, warning:3, error:2, fatal:1, panic:0")
+	flag.StringVar(&logPath, "log-path", "", "log save path, default terminal output")
+	flag.IntVar(&logLevel, "log-level", 5, "log level, default:5, trace:6, debug:5, info:4, warning:3, error:2, fatal:1, panic:0")
 
 	flag.Parse()
 
